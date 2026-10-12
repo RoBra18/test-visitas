@@ -23,6 +23,7 @@ export class VisitasService {
     const nuevaVisita = new this.visitaModel({
       ...dto,
       fecha: new Date(dto.fecha),
+      creadaEn: new Date()
     });
 
     const guardada = await nuevaVisita.save();

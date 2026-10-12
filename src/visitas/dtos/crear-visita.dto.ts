@@ -3,6 +3,8 @@ import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
+  IsISO8601,
+  isISO8601,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -33,6 +35,8 @@ export class CrearVisitaDto {
 
   @ApiProperty({ example: '2026-10-01T14:30:00.000Z' })
   @IsDateString()
+  @IsISO8601()
+  
   fecha!: string;
 
   @ApiProperty({ type: UbicacionDto })

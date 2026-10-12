@@ -51,8 +51,9 @@ export class Visita {
 
   @Prop({ required: true, type: MongooseSchema.Types.Mixed })
   detalle!: Record<string, any>;
-
-  creadaEn?: Date;
+  
+  @Prop({ required: true, type: Date })
+  creadaEn!: Date;
 }
 
 export const VisitaSchema = SchemaFactory.createForClass(Visita);
