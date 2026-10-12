@@ -31,7 +31,7 @@ export class Ubicacion {
   },
 })
 export class Visita {
-  @Prop({ required: true, index: true, type: String })
+  @Prop({ required: true, type: String })
   vendedorId!: string;
 
   @Prop({ required: true, type: String })
@@ -57,5 +57,7 @@ export class Visita {
 }
 
 export const VisitaSchema = SchemaFactory.createForClass(Visita);
+
+VisitaSchema.index({ vendedorId: 1, tipo: 1, fecha: -1 });
 VisitaSchema.index({ vendedorId: 1, fecha: -1 });
 VisitaSchema.index({ fecha: -1 });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Visita, VisitaDocument } from 'src/visitas/schemas/visitas.schema';
@@ -20,6 +20,10 @@ export class ReportesService {
 
         const fechaInicioUtc = fechaBoliviaInicioUtc(desde);
         const fechaFinUtc = fechaBoliviaFinUtc(hasta);
+
+        if (fechaInicioUtc > fechaFinUtc) {
+            throw new BadRequestException('El parámetro "desde" no puede ser posterior a "hasta"');
+        }
 
         return this.visitaModel.aggregate<ReporteDiaRespuestaDto>([
             {
