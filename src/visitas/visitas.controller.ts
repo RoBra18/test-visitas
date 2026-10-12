@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -12,8 +12,10 @@ import {
 } from '@nestjs/swagger';
 import { VisitasService } from './visitas.service';
 import { CrearVisitaDto } from './dtos';
-import {  VisitaRespuestaDto } from './dtos/visita-respuesta.dto';
+import { VisitaRespuestaDto } from './dtos/visita-respuesta.dto';
 import { SWAGGER_BODY_EXAMPLES, SWAGGER_RESPONSE_EXAMPLES } from './docs/visitas-swagger.examples';
+import { VisitasPaginadasRespuestaDto } from './dtos/filtros/visita-paginada-respuesta.dto';
+import { FiltrosVisitaDto } from './dtos/filtros/filtros-visita.dto';
 
 @ApiTags('visitas')
 @Controller('visitas')
@@ -21,7 +23,7 @@ export class VisitasController {
   constructor(private readonly visitasService: VisitasService) { }
 
   @Post()
-@HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Registra una nueva visita de campo' })
   @ApiBody({
     type: CrearVisitaDto,
@@ -47,7 +49,7 @@ export class VisitasController {
   @ApiConflictResponse({
     description: 'El vendedor existe pero está inactivo',
   })
-  
+
   crear(@Body() dto: CrearVisitaDto) {
     return this.visitasService.crear(dto);
   }
@@ -73,7 +75,28 @@ export class VisitasController {
     description: 'No se encontró la visita con el id especificado',
   })
   @Get(':id')
-  async obtenerPorId(@Param('id') id: string) : Promise<VisitaRespuestaDto> {
+  async obtenerPorId(@Param('id') id: string): Promise<VisitaRespuestaDto> {
     return this.visitasService.obtenerPorId(id);
+  }
+
+
+  @ApiOperation({
+    summary: 'Listar visitas con filtros y paginación',
+    description:
+      'Devuelve una lista paginada de visitas ordenada por fecha descendente. Los filtros por fecha (desde/hasta) se calculan en hora de Bolivia (UTC-4) de forma inclusiva.',
+  })
+  @ApiOkResponse({
+    description: 'Lista paginada de visitas',
+    type: VisitasPaginadasRespuestaDto,
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Parámetros inválidos (por ejemplo limit > 100, page < 1 o fechas con formato erróneo)',
+  })
+  @Get()
+  async listar(
+    @Query() filtros: FiltrosVisitaDto,
+  ): Promise<VisitasPaginadasRespuestaDto> {
+    return this.visitasService.listar(filtros);
   }
 }
