@@ -1,8 +1,10 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
+  IsISO8601,
+  isISO8601,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -33,6 +35,8 @@ export class CrearVisitaDto {
 
   @ApiProperty({ example: '2026-10-01T14:30:00.000Z' })
   @IsDateString()
+  @IsISO8601()
+  
   fecha!: string;
 
   @ApiProperty({ type: UbicacionDto })
@@ -47,6 +51,11 @@ export class CrearVisitaDto {
 
   @ApiProperty({
     description: 'Estructura variable según tipo: VENTA, COBRANZA o RECLAMO',
+    oneOf: [
+      { $ref: getSchemaPath(DetalleVentaDto) },
+      { $ref: getSchemaPath(DetalleCobranzaDto) },
+      { $ref: getSchemaPath(DetalleReclamoDto) },
+    ],
   })
   @ValidateNested()
   @Type((opts) => {

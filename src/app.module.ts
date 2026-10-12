@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HealthModule } from './health/health.module';
 import { VendedoresModule } from './vendedores/vendedores.module';
+import { VisitasModule } from './visitas/visitas.module';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { VendedoresModule } from './vendedores/vendedores.module';
     }),
     HealthModule,
     VendedoresModule,
-    // TODO: registra aquí tus módulos de visitas y reportes.
+    VisitasModule,
   ],
 })
 export class AppModule {}
