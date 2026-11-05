@@ -1,7 +1,5 @@
 # Decisiones
 
-> Completa este archivo con tus propias palabras. Media página alcanza. En la entrevista te pediremos que expliques cada punto.
-
 ## Modelado de las visitas
 
 <!-- ¿Cómo representaste los tres tipos de visita en Mongo (un documento con subdocumento, discriminadores, colecciones separadas...)? ¿Por qué? -->
